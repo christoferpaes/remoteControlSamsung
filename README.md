@@ -4,7 +4,7 @@
   <p>
     This has not been tested.. MainActivity needs to be cleaned up.
     <b> 
-      app's build.gradle file
+      app's build.gradle file /n
     </b>
     
     implementation files('libs/smartview.jar')
