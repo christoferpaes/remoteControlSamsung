@@ -373,46 +373,59 @@ samsungDeviceFinder.findDevice(new SamsungDeviceFinder.DeviceFinderCallback() {
     }
 
     private void connectToSamsungTV(String tvIpAddress) {
-    RemoteService remoteService = new RemoteService(getApplicationContext(), new RemoteServiceListener() {
-        @Override
-        public void onServiceDisconnected(int errorCode) {
-            Log.e(TAG, "RemoteService disconnected with error code: " + errorCode);
+        remoteService = new RemoteService(getApplicationContext(), new RemoteServiceListener() {
+            @Override
+            public void onServiceDisconnected(int errorCode) {
+                Log.e(TAG, "RemoteService disconnected with error code: " + errorCode);
+            }
+
+            @Override
+            public void onServiceConnected(RemoteServiceManager serviceManager) {
+                remoteServiceManager = serviceManager;
+                initializeRemoteControlManager();
+            }
+        });
+
+        RemoteDevice device = new RemoteDevice();
+        device.setIp(tvIpAddress);
+        remoteServiceManager.connect(device);
+    }
+
+    private void initializeRemoteControlManager() {
+        remoteControlManager = remoteServiceManager.getRemoteControlManager();
+
+        // Set click listeners for the remote control buttons
+        volumeUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setVolumeUp();
+            }
+        });
+
+        volumeDownButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setVolumeDown();
+            }
+        });
+
+        // Set click listeners for other remote control buttons
+        // ...
+    }
+
+    private void setVolumeUp() {
+        if (remoteControlManager != null) {
+            remoteControlManager.sendKeyEvent(RemoteControlManager.KEYCODE_VOLUME_UP);
         }
+    }
 
-        @Override
-        public void onServiceConnected(RemoteServiceManager serviceManager) {
-            RemoteControlManager remoteControlManager = serviceManager.getRemoteControlManager();
-            // Initialize the remote control manager and set button click listeners
-            
-            // Set click listeners for the remote control buttons
-            volumeUpButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setVolumeUp(remoteControlManager);
-                }
-            });
-    
-            volumeDownButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setVolumeDown(remoteControlManager);
-                }
-            });
-    
-            // Set click listeners for other remote control buttons
-    
-            // ...
+    private void setVolumeDown() {
+        if (remoteControlManager != null) {
+            remoteControlManager.sendKeyEvent(RemoteControlManager.KEYCODE_VOLUME_DOWN);
         }
-    });
-    
-    // Connect to the Samsung Smart TV
-    RemoteDevice device = new RemoteDevice();
-    device.setIp(tvIpAddress);
-    remoteService.connect(device);
-}
+    }
 
 
-    // Implement the methods for handling the remote control actions (e.g., volume up, volume down, etc.)
 
     @Override
     protected void onDestroy() {
