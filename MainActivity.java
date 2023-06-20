@@ -334,34 +334,41 @@ samsungDeviceFinder.findDevice(new SamsungDeviceFinder.DeviceFinderCallback() {
     }
 
     private void searchSamsungDevice() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+    ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        if (connectivityManager != null) {
-            connectivityManager.registerDefaultNetworkCallback(new ConnectivityManager.NetworkCallback() {
-                @Override
-                public void onAvailable(Network network) {
-                    NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
+    if (connectivityManager != null) {
+        connectivityManager.registerDefaultNetworkCallback(new ConnectivityManager.NetworkCallback() {
+            @Override
+            public void onAvailable(Network network) {
+                NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
 
-                    if (capabilities != null && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                        ServiceSearch serviceSearch = Service.search(MainActivity.this);
-                        serviceSearch.setOnServiceFoundListener(new OnServiceFoundListener() {
-                            @Override
-                            public void onFound(List<Service> services) {
-                                for (Service service : services) {
-                                    if (service.getModel().contains(DEVICE_MODEL)) {
-                                        String tvIpAddress = service.getIp();
-                                        Log.d(TAG, "Found Samsung Smart TV at IP address: " + tvIpAddress);
-                                        // Connect to the Samsung Smart TV and initialize remote control
-                                        connectToSamsungTV(tvIpAddress);
-                                        break;
+                if (capabilities != null && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                    if (wifiManager != null) {
+                        String connectedSSID = wifiManager.getConnectionInfo().getSSID();
+
+                        if (connectedSSID != null && connectedSSID.contains("Samsung")) {
+                            ServiceSearch serviceSearch = Service.search(MainActivity.this);
+                            serviceSearch.setOnServiceFoundListener(new OnServiceFoundListener() {
+                                @Override
+                                public void onFound(List<Service> services) {
+                                    for (Service service : services) {
+                                        if (service.getModel().contains(DEVICE_MODEL)) {
+                                            String tvIpAddress = service.getIp();
+                                            Log.d(TAG, "Found Samsung Smart TV at IP address: " + tvIpAddress);
+                                            // Connect to the Samsung Smart TV and initialize remote control
+                                            connectToSamsungTV(tvIpAddress);
+                                            break;
+                                        }
                                     }
                                 }
-                            }
-                        });
-                        serviceSearch.start();
+                            });
+                            serviceSearch.start();
+                        }
                     }
                 }
-            });
+            }
+        });
         }
     }
 
