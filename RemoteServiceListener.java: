@@ -1,0 +1,10 @@
+package com.samsung.android.sdk.remoteservice;
+
+import com.samsung.android.sdk.remoteservice.RemoteServiceManager;
+
+public interface RemoteServiceListener {
+
+    void onServiceDisconnected(int errorCode);
+
+    void onServiceConnected(RemoteServiceManager serviceManager);
+}
