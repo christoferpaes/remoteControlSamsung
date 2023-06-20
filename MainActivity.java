@@ -13,6 +13,14 @@ import com.samsung.multiscreen.Service;
 import com.samsung.multiscreen.ServiceSearch;
 import com.samsung.multiscreen.ServiceSearch.OnServiceFoundListener;
 
+import androidx.appcompat.app.AppCompatActivity;
+import com.samsung.android.sdk.SsdkUnsupportedException;
+import com.samsung.android.sdk.remoteservice.RemoteDevice;
+import com.samsung.android.sdk.remoteservice.RemoteService;
+import com.samsung.android.sdk.remoteservice.RemoteServiceListener;
+import com.samsung.android.sdk.remoteservice.RemoteServiceManager;
+import com.samsung.android.sdk.remoteservice.device.RemoteControlManager;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -47,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         pauseButton = findViewById(R.id.pauseButton);
         rewindButton = findViewById(R.id.rewindButton);
         playButton = findViewById(R.id.playButton);
-        
+        SamsungSmartViewSDK.init(this);
         // Connect to the Samsung Smart TV
 remoteService = new RemoteService(getApplicationContext(), new RemoteServiceListener() {
     @Override
