@@ -22,6 +22,15 @@ public class MainActivity extends AppCompatActivity {
 
     private Button volumeUpButton;
     private Button volumeDownButton;
+    private Button[] numberButtons;
+    private Button muteButton;
+    private Button menuButton;
+    private Button searchButton;
+    private Button fastForwardButton;
+    private Button pauseButton;
+    private Button rewindButton;
+    private Button playButton;
+
     // Add more buttons as needed for other remote control actions
 
     @Override
@@ -31,20 +40,263 @@ public class MainActivity extends AppCompatActivity {
 
         volumeUpButton = findViewById(R.id.volumeUpButton);
         volumeDownButton = findViewById(R.id.volumeDownButton);
+        muteButton = findViewById(R.id.muteButton);
+        menuButton = findViewById(R.id.menuButton);
+        searchButton = findViewById(R.id.searchButton);
+        fastForwardButton = findViewById(R.id.fastForwardButton);
+        pauseButton = findViewById(R.id.pauseButton);
+        rewindButton = findViewById(R.id.rewindButton);
+        playButton = findViewById(R.id.playButton);
 
+        // Set click listeners for the remote control buttons
         volumeUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle volume up action
+                setVolumeUp();
             }
         });
 
         volumeDownButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle volume down action
+                setVolumeDown();
             }
         });
+
+        muteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setMute();
+            }
+        });
+
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openMenu();
+            }
+        });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSearch();
+            }
+        });
+
+        fastForwardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setFastForward();
+            }
+        });
+
+        pauseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setPause();
+            }
+        });
+
+        rewindButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setRewind();
+            }
+        });
+
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setPlay();
+            }
+        });
+
+        // Set click listeners for number buttons
+        numberButtons = new Button[10];
+        for (int i = 0; i < 10; i++) {
+            int buttonId = getResources().getIdentifier("numberButton" + i, "id", getPackageName());
+            numberButtons[i] = findViewById(buttonId);
+            final int number = i;
+            numberButtons[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendNumber(number);
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            remoteService.initialize();
+        } catch (SsdkUnsupportedException e) {
+            Log.e(TAG, "Failed to initialize the RemoteService: " + e.getMessage());
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        remoteServiceManager.disconnect();
+    }
+
+    private void initializeRemoteControlManager() {
+        remoteControlManager = remoteServiceManager.getRemoteControlManager();
+    }
+
+    // Volume Up
+    private void setVolumeUp() {
+        remoteControlManager.setVolumeUp(new RemoteControlManager.ResultCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Volume Up command sent successfully");
+            }
+
+            @Override
+            public void onError(int errorCode) {
+                Log.e(TAG, "Failed to send Volume Up command. Error code: " + errorCode);
+            }
+        });
+    }
+
+    // Volume Down
+    private void setVolumeDown() {
+        remoteControlManager.setVolumeDown(new RemoteControlManager.ResultCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Volume Down command sent successfully");
+            }
+
+            @Override
+            public void onError(int errorCode) {
+                Log.e(TAG, "Failed to send Volume Down command. Error code: " + errorCode);
+            }
+        });
+    }
+
+    // Mute
+    private void setMute() {
+        remoteControlManager.setMute(new RemoteControlManager.ResultCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Mute command sent successfully");
+            }
+
+            @Override
+            public void onError(int errorCode) {
+                Log.e(TAG, "Failed to send Mute command. Error code: " + errorCode);
+            }
+        });
+    }
+
+    // Menu
+    private void openMenu() {
+        remoteControlManager.openMenu(new RemoteControlManager.ResultCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Menu command sent successfully");
+            }
+
+            @Override
+            public void onError(int errorCode) {
+                Log.e(TAG, "Failed to send Menu command. Error code: " + errorCode);
+            }
+        });
+    }
+
+    // Search
+    private void openSearch() {
+        remoteControlManager.openSearch(new RemoteControlManager.ResultCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Search command sent successfully");
+            }
+
+            @Override
+            public void onError(int errorCode) {
+                Log.e(TAG, "Failed to send Search command. Error code: " + errorCode);
+            }
+        });
+    }
+
+    // Fast Forward
+    private void setFastForward() {
+        remoteControlManager.setFastForward(new RemoteControlManager.ResultCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Fast Forward command sent successfully");
+            }
+
+            @Override
+            public void onError(int errorCode) {
+                Log.e(TAG, "Failed to send Fast Forward command. Error code: " + errorCode);
+            }
+        });
+    }
+
+    // Pause
+    private void setPause() {
+        remoteControlManager.setPause(new RemoteControlManager.ResultCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Pause command sent successfully");
+            }
+
+            @Override
+            public void onError(int errorCode) {
+                Log.e(TAG, "Failed to send Pause command. Error code: " + errorCode);
+            }
+        });
+    }
+
+    // Rewind
+    private void setRewind() {
+        remoteControlManager.setRewind(new RemoteControlManager.ResultCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Rewind command sent successfully");
+            }
+
+            @Override
+            public void onError(int errorCode) {
+                Log.e(TAG, "Failed to send Rewind command. Error code: " + errorCode);
+            }
+        });
+    }
+
+    // Play
+    private void setPlay() {
+        remoteControlManager.setPlay(new RemoteControlManager.ResultCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Play command sent successfully");
+            }
+
+            @Override
+            public void onError(int errorCode) {
+                Log.e(TAG, "Failed to send Play command. Error code: " + errorCode);
+            }
+        });
+    }
+
+    // Send number
+    private void sendNumber(int number) {
+        remoteControlManager.sendNumber(number, new RemoteControlManager.ResultCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Number " + number + " command sent successfully");
+            }
+
+            @Override
+            public void onError(int errorCode) {
+                Log.e(TAG, "Failed to send Number " + number + " command. Error code: " + errorCode);
+            }
+        });
+    }
+}
 
         searchSamsungDevice();
     }
