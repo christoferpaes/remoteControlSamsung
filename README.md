@@ -2,7 +2,7 @@
 <header>
   
   <p>
-    
+    This has not been tested.. MainActivity needs to be cleaned up/.
     <b> 
       app's build.gradle file
     </b>
