@@ -2,7 +2,7 @@
 <header>
   
   <p>
-    This has not been tested.. MainActivity needs to be cleaned up/.
+    This has not been tested.. MainActivity needs to be cleaned up.
     <b> 
       app's build.gradle file
     </b>
@@ -14,7 +14,7 @@ implementation 'org.json:json:20140107'
   </p>
   </header>
   
-  <header>
+  <header2>
   
   <p>
     
@@ -26,7 +26,7 @@ implementation 'org.json:json:20140107'
   </p>
   </header>
   
-    <header>
+    <header3>
   
   <p>
     
