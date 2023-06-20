@@ -47,6 +47,38 @@ public class MainActivity extends AppCompatActivity {
         pauseButton = findViewById(R.id.pauseButton);
         rewindButton = findViewById(R.id.rewindButton);
         playButton = findViewById(R.id.playButton);
+        
+        // Connect to the Samsung Smart TV
+remoteService = new RemoteService(getApplicationContext(), new RemoteServiceListener() {
+    @Override
+    public void onServiceDisconnected(int errorCode) {
+        Log.e(TAG, "RemoteService disconnected with error code: " + errorCode);
+    }
+
+    @Override
+    public void onServiceConnected(RemoteServiceManager serviceManager) {
+        remoteServiceManager = serviceManager;
+        initializeRemoteControlManager();
+    }
+});
+
+// Obtain the TV IP address by recognizing a Samsung device on the network
+SamsungDeviceFinder samsungDeviceFinder = new SamsungDeviceFinder(getApplicationContext());
+samsungDeviceFinder.findDevice(new SamsungDeviceFinder.DeviceFinderCallback() {
+    @Override
+    public void onDeviceFound(String ipAddress) {
+        // Connect to the Samsung Smart TV using the obtained IP address
+        RemoteDevice device = new RemoteDevice();
+        device.setIp(ipAddress);
+        remoteControlManager.connect(device);
+    }
+
+    @Override
+    public void onDeviceNotFound() {
+        // Handle the case when no Samsung device is found on the network
+        Log.e(TAG, "No Samsung device found on the network");
+    }
+});
 
         // Set click listeners for the remote control buttons
         volumeUpButton.setOnClickListener(new View.OnClickListener() {
