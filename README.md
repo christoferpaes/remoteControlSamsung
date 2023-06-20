@@ -18,15 +18,15 @@ implementation 'org.json:json:20140107'
   
   <p>
     
-    <b>
+ 
       AndroidManifest.xml
-    </b>
+
     <uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY" />
 
   </p>
   </header>
   
-    <header3>
+<header>
   
   <p>
     
