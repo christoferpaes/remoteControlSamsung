@@ -3,9 +3,9 @@
   
   <p>
     This has not been tested.. MainActivity needs to be cleaned up.
-    <b> 
-      app's build.gradle file /n
-    </b>
+    <div><b> 
+      app's build.gradle file 
+    </b> </div>
     
     implementation files('libs/smartview.jar')
 implementation 'org.eclipse.jetty:jetty-client:9.4.6.v20170531'
