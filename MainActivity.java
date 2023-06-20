@@ -373,9 +373,44 @@ samsungDeviceFinder.findDevice(new SamsungDeviceFinder.DeviceFinderCallback() {
     }
 
     private void connectToSamsungTV(String tvIpAddress) {
-        // Connect to the Samsung Smart TV using the obtained IP address
-        // Initialize the remote control manager and set button click listeners
-    }
+    RemoteService remoteService = new RemoteService(getApplicationContext(), new RemoteServiceListener() {
+        @Override
+        public void onServiceDisconnected(int errorCode) {
+            Log.e(TAG, "RemoteService disconnected with error code: " + errorCode);
+        }
+
+        @Override
+        public void onServiceConnected(RemoteServiceManager serviceManager) {
+            RemoteControlManager remoteControlManager = serviceManager.getRemoteControlManager();
+            // Initialize the remote control manager and set button click listeners
+            
+            // Set click listeners for the remote control buttons
+            volumeUpButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setVolumeUp(remoteControlManager);
+                }
+            });
+    
+            volumeDownButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setVolumeDown(remoteControlManager);
+                }
+            });
+    
+            // Set click listeners for other remote control buttons
+    
+            // ...
+        }
+    });
+    
+    // Connect to the Samsung Smart TV
+    RemoteDevice device = new RemoteDevice();
+    device.setIp(tvIpAddress);
+    remoteService.connect(device);
+}
+
 
     // Implement the methods for handling the remote control actions (e.g., volume up, volume down, etc.)
 
