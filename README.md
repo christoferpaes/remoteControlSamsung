@@ -30,7 +30,7 @@ implementation 'org.json:json:20140107'
   
   <p>
     
-    <b>
+  
       Obtain the Samsung Smart View SDK:
 
 Visit the Samsung Developer website (https://developer.samsung.com/smarttv/develop/extension-libraries/smart-view-sdk.html) and download the Smart View SDK.
